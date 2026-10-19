@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RidroExpress — редактор схем</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#131313">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Russo+One&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/editor.css?v=5">
+</head>
+<body>
+  <div class="stripes"></div>
+  <header class="header">
+    <div class="wrap">
+      <a class="logo" href="https://lunevsky.github.io/ridroexpress/">
+        <span class="plate">Ridro</span>
+        <small>Редактор<br>схем маршрутов</small>
+      </a>
+    </div>
+  </header>
+
+  <main class="ed">
+    <section class="ed-stage">
+      <div class="ed-modes" role="toolbar">
+        <button class="btn btn-sm" data-mode="pan">✋ Карта</button>
+        <button class="btn btn-sm" data-mode="line">〰 Линия</button>
+        <button class="btn btn-sm" data-mode="stop">◉ Остановка</button>
+        <button class="btn btn-sm" data-mode="via">◇ Через точку</button>
+        <button class="btn btn-sm" data-mode="arrow">➤ Стрелка</button>
+        <span class="muted ed-hint" id="hint"></span>
+      </div>
+      <canvas id="cv" width="1920" height="1080"></canvas>
+      <p class="muted ed-help">Колесо — масштаб. Всё на схеме можно перетаскивать: остановки, подписи, точки линии, блоки. <b>Alt+клик</b> — удалить остановку, стрелку или точку линии. <b>Ctrl+Z</b> — отменить, <b>Ctrl+Y</b> — вернуть.</p>
+    </section>
+
+    <aside class="ed-side">
+      <div class="panel">
+        <label class="field">Номер маршрута <input class="input" id="num" maxlength="8"></label>
+        <label class="check"><input type="checkbox" id="auto"> Линия по дорогам (авто)</label>
+        <label class="check"><input type="checkbox" id="return-trip"> Обратный рейс (авто)</label>
+        <label class="field">Толщина линии — по самой широкой дороге маршрута <span id="width-val"></span>
+          <input type="range" id="width" min="0.5" max="1.5" step="0.05">
+        </label>
+        <p class="muted ed-small" id="roads-info">Дороги загружаются…</p>
+        <button class="btn btn-ghost btn-sm" id="via-clear">Убрать промежуточные точки</button>
+        <div class="ed-row" id="manual-btns">
+          <button class="btn btn-ghost btn-sm" id="line-undo">↶ Точка линии</button>
+          <button class="btn btn-ghost btn-sm" id="line-clear">Очистить линию</button>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>Остановки</h3>
+        <ol class="ed-stops" id="stops"></ol>
+        <p class="muted ed-small" id="stops-empty">Режим «Остановка» → клик по карте. Остановки ставьте по порядку движения — линия проложится по дорогам сама.</p>
+      </div>
+
+      <div class="panel">
+        <h3>Оформление</h3>
+        <label class="check"><input type="checkbox" id="show-list"> Список остановок</label>
+        <label class="check"><input type="checkbox" id="show-legend"> Легенда</label>
+        <label class="check"><input type="checkbox" id="neutral"> Нейтральный тон подложки</label>
+        <label class="field">Примечание (под легендой)
+          <textarea class="input" id="note" rows="3"></textarea>
+        </label>
+        <label class="btn btn-ghost btn-sm ed-file">Загрузить подложку… <input type="file" id="base-file" accept="image/*" hidden></label>
+        <p class="muted ed-small" id="base-info"></p>
+      </div>
+
+      <div class="panel ed-actions">
+        <button class="btn btn-primary" id="export">Скачать PNG 1920×1080</button>
+        <div class="ed-row">
+          <button class="btn btn-ghost btn-sm" id="save">Сохранить .json</button>
+          <label class="btn btn-ghost btn-sm ed-file">Открыть .json <input type="file" id="open" accept=".json,application/json" hidden></label>
+          <button class="btn btn-danger btn-sm" id="reset">Новая схема</button>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <script src="assets/editor/base-opm.js?v=4"></script>
+  <script src="assets/editor/roads.js?v=5"></script>
+  <script src="assets/js/editor.js?v=13"></script>
+</body>
+</html>
